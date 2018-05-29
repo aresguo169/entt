@@ -14,5 +14,4 @@
 * work stealing job system (see #100)
 * make view copyable/moveable
 * reflection system (maybe)
-* C++17. That's all.
 * AOB
