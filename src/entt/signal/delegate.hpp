@@ -38,13 +38,14 @@ class Delegate<Ret(Args...)> final {
     using proto_fn_type = Ret(const void *, Args...);
     using stub_type = std::pair<const void *, proto_fn_type *>;
 
-    template<typename Class, auto Function>
-    static Ret proto([[maybe_unused]] const void *instance, Args... args) {
-        if constexpr(std::is_member_function_pointer_v<decltype(Function)>) {
-            return (static_cast<Class *>(instance)->*Function)(args...);
-        } else {
-            return (Function)(args...);
-        }
+    template<auto Function>
+    static Ret proto(const void *, Args... args) {
+        return (Function)(args...);
+    }
+
+    template<typename Class, auto Member>
+    static Ret proto(const void *instance, Args... args) {
+        return (static_cast<Class *>(instance)->*Member)(args...);
     }
 
 public:
