@@ -147,12 +147,12 @@ class Sink<Ret(Args...)> final {
 
     template<auto Function>
     static Ret proto(const void *, Args... args) {
-        return (Function)(args...);
+        return std::invoke(Function, args...);
     }
 
     template<typename Class, auto Member>
     static Ret proto(const void *instance, Args... args) {
-        return (static_cast<Class *>(instance)->*Member)(args...);
+        return std::invoke(Member, static_cast<Class *>(instance), args...);
     }
 
     Sink(std::vector<call_type> *calls) ENTT_NOEXCEPT
