@@ -15,3 +15,4 @@
 * make view copyable/moveable
 * reflection system (maybe)
 * AOB
+* static stuff vs inline variables (see SO questions)
