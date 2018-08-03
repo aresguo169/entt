@@ -102,7 +102,7 @@ struct ServiceLocator final {
     }
 
 private:
-    static inline std::shared_ptr<Service> service;
+    inline static std::shared_ptr<Service> service = nullptr;
 };
 
 

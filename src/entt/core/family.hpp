@@ -31,7 +31,8 @@ public:
 
     /*! @brief Statically generated unique identifier for the given type. */
     template<typename... Type>
-    inline static const auto type = family<std::decay_t<Type>...>;
+    // at the time I'm writing, clang crashes during compilation if auto is used in place of family_type here
+    inline static const family_type type = family<std::decay_t<Type>...>;
 };
 
 
