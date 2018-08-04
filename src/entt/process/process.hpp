@@ -234,7 +234,7 @@ public:
         case State::UNINITIALIZED:
             tick(0, tag<State::UNINITIALIZED>{}, data);
             current = State::RUNNING;
-            // no break on purpose, tasks are executed immediately
+            [[fallthrough]]
         case State::RUNNING:
             tick(0, tag<State::RUNNING>{}, delta, data);
         default:
