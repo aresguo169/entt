@@ -234,7 +234,7 @@ public:
         case State::UNINITIALIZED:
             tick(0, tag<State::UNINITIALIZED>{}, data);
             current = State::RUNNING;
-            [[fallthrough]]
+            [[fallthrough]];
         case State::RUNNING:
             tick(0, tag<State::RUNNING>{}, delta, data);
         default:
