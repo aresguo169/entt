@@ -233,18 +233,18 @@ TEST(SigH, ConstNonConstNoExcept) {
     entt::SigH<void()> sigh;
     ConstNonConstNoExcept functor;
 
-    sigh.sink().connect<ConstNonConstNoExcept, &ConstNonConstNoExcept::f>(&functor);
-    sigh.sink().connect<ConstNonConstNoExcept, &ConstNonConstNoExcept::g>(&functor);
-    sigh.sink().connect<ConstNonConstNoExcept, &ConstNonConstNoExcept::h>(&functor);
-    sigh.sink().connect<ConstNonConstNoExcept, &ConstNonConstNoExcept::i>(&functor);
+    sigh.sink().connect<&ConstNonConstNoExcept::f>(&functor);
+    sigh.sink().connect<&ConstNonConstNoExcept::g>(&functor);
+    sigh.sink().connect<&ConstNonConstNoExcept::h>(&functor);
+    sigh.sink().connect<&ConstNonConstNoExcept::i>(&functor);
     sigh.publish();
 
     ASSERT_EQ(functor.cnt, 4);
 
-    sigh.sink().disconnect<ConstNonConstNoExcept, &ConstNonConstNoExcept::f>(&functor);
-    sigh.sink().disconnect<ConstNonConstNoExcept, &ConstNonConstNoExcept::g>(&functor);
-    sigh.sink().disconnect<ConstNonConstNoExcept, &ConstNonConstNoExcept::h>(&functor);
-    sigh.sink().disconnect<ConstNonConstNoExcept, &ConstNonConstNoExcept::i>(&functor);
+    sigh.sink().disconnect<&ConstNonConstNoExcept::f>(&functor);
+    sigh.sink().disconnect<&ConstNonConstNoExcept::g>(&functor);
+    sigh.sink().disconnect<&ConstNonConstNoExcept::h>(&functor);
+    sigh.sink().disconnect<&ConstNonConstNoExcept::i>(&functor);
     sigh.publish();
 
     ASSERT_EQ(functor.cnt, 4);

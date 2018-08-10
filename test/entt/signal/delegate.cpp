@@ -62,16 +62,16 @@ TEST(Delegate, ConstNonConstNoExcept) {
     entt::Delegate<void()> delegate;
     ConstNonConstNoExcept functor;
 
-    delegate.connect<ConstNonConstNoExcept, &ConstNonConstNoExcept::f>(&functor);
+    delegate.connect<&ConstNonConstNoExcept::f>(&functor);
     delegate();
 
-    delegate.connect<ConstNonConstNoExcept, &ConstNonConstNoExcept::g>(&functor);
+    delegate.connect<&ConstNonConstNoExcept::g>(&functor);
     delegate();
 
-    delegate.connect<ConstNonConstNoExcept, &ConstNonConstNoExcept::h>(&functor);
+    delegate.connect<&ConstNonConstNoExcept::h>(&functor);
     delegate();
 
-    delegate.connect<ConstNonConstNoExcept, &ConstNonConstNoExcept::i>(&functor);
+    delegate.connect<&ConstNonConstNoExcept::i>(&functor);
     delegate();
 
     ASSERT_EQ(functor.cnt, 4);

@@ -43,7 +43,7 @@ struct Invoker<Ret(Args...), Collector> {
 
     virtual ~Invoker() = default;
 
-    bool invoke(Collector &collector, proto_fn_type *proto, const void *instance, Args... args) const {
+    bool invoke(Collector &collector, proto_fn_type *proto, void *instance, Args... args) const {
         return collector(proto(instance, args...));
     }
 };
@@ -55,7 +55,7 @@ struct Invoker<void(Args...), Collector> {
 
     virtual ~Invoker() = default;
 
-    bool invoke(Collector &, proto_fn_type *proto, const void *instance, Args... args) const {
+    bool invoke(Collector &, proto_fn_type *proto, void *instance, Args... args) const {
         return (proto(instance, args...), true);
     }
 };
@@ -146,12 +146,12 @@ class Sink<Ret(Args...)> final {
     using call_type = typename internal::sigh_traits<Ret(Args...)>::call_type;
 
     template<auto Function>
-    static Ret proto(const void *, Args... args) {
+    static Ret proto(void *, Args... args) {
         return std::invoke(Function, args...);
     }
 
     template<typename Class, auto Member>
-    static Ret proto(const void *instance, Args... args) {
+    static Ret proto(void *instance, Args... args) {
         return std::invoke(Member, static_cast<Class *>(instance), args...);
     }
 
@@ -192,7 +192,7 @@ public:
     void connect(Class *instance) {
         static_assert(std::is_invocable_r_v<Ret, decltype(Member), Class, Args...>);
         disconnect<Member>(instance);
-        calls.emplace_back(instance, &proto<Class, Member>);
+        calls->emplace_back(instance, &proto<Class, Member>);
     }
 
     /**
