@@ -41,7 +41,7 @@ struct Invoker<Ret(Args...), Collector> {
 
     virtual ~Invoker() = default;
 
-    bool invoke(Collector &collector, proto_fn_type *proto, void *instance, Args... args) const {
+    bool invoke(Collector &collector, proto_fn_type *proto, const void *instance, Args... args) const {
         return collector(proto(instance, args...));
     }
 };
@@ -53,7 +53,7 @@ struct Invoker<void(Args...), Collector> {
 
     virtual ~Invoker() = default;
 
-    bool invoke(Collector &, proto_fn_type *proto, void *instance, Args... args) const {
+    bool invoke(Collector &, proto_fn_type *proto, const void *instance, Args... args) const {
         return (proto(instance, args...), true);
     }
 };
@@ -144,7 +144,7 @@ class Sink<Ret(Args...)> final {
     using call_type = typename internal::sigh_traits<Ret(Args...)>::call_type;
 
     template<Ret(*Function)(Args...)>
-    static Ret proto(void *, Args... args) {
+    static Ret proto(const void *, Args... args) {
         return (Function)(args...);
     }
 
@@ -154,8 +154,8 @@ class Sink<Ret(Args...)> final {
     }
 
     template<typename Class, Ret(Class:: *Member)(Args... args)>
-    static Ret proto(void *instance, Args... args) {
-        return (static_cast<Class *>(instance)->*Member)(args...);
+    static Ret proto(const void *instance, Args... args) {
+        return (const_cast<Class *>(static_cast<const Class *>(instance))->*Member)(args...);
     }
 
     Sink(std::vector<call_type> *calls) ENTT_NOEXCEPT

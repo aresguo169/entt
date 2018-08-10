@@ -34,11 +34,11 @@ class Delegate;
  */
 template<typename Ret, typename... Args>
 class Delegate<Ret(Args...)> final {
-    using proto_fn_type = Ret(void *, Args...);
-    using stub_type = std::pair<void *, proto_fn_type *>;
+    using proto_fn_type = Ret(const void *, Args...);
+    using stub_type = std::pair<const void *, proto_fn_type *>;
 
     template<Ret(*Function)(Args...)>
-    static Ret proto(void *, Args... args) {
+    static Ret proto(const void *, Args... args) {
         return (Function)(args...);
     }
 
@@ -48,8 +48,8 @@ class Delegate<Ret(Args...)> final {
     }
 
     template<typename Class, Ret(Class:: *Member)(Args...)>
-    static Ret proto(void *instance, Args... args) {
-        return (static_cast<Class *>(instance)->*Member)(args...);
+    static Ret proto(const void *instance, Args... args) {
+        return (const_cast<Class *>(static_cast<const Class *>(instance))->*Member)(args...);
     }
 
 public:
